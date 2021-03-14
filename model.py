@@ -63,10 +63,11 @@ class CPPNVAE():
     self.net_depth_g = net_depth_g
     self.model_name = model_name
     self.keep_prob = keep_prob
+    self.rate = 1 - keep_prob
     self.df_dim = df_dim
 
     # tf Graph batch of image (batch_size, height, width, depth)
-    self.batch = tf.placeholder(tf.float32, [batch_size, x_dim, y_dim, c_dim])
+    self.batch = tf.compat.v1.placeholder(tf.float32, [batch_size, x_dim, y_dim, c_dim])
     self.batch_flatten = tf.reshape(self.batch, [batch_size, -1])
 
     n_points = x_dim * y_dim
@@ -75,11 +76,11 @@ class CPPNVAE():
     self.x_vec, self.y_vec, self.r_vec = self.coordinates(x_dim, y_dim, scale)
 
     # latent vector
-    # self.z = tf.placeholder(tf.float32, [self.batch_size, self.z_dim])
+    # self.z = tf.compat.v1.placeholder(tf.float32, [self.batch_size, self.z_dim])
     # inputs to cppn, like coordinates and radius from centre
-    self.x = tf.placeholder(tf.float32, [self.batch_size, None, 1])
-    self.y = tf.placeholder(tf.float32, [self.batch_size, None, 1])
-    self.r = tf.placeholder(tf.float32, [self.batch_size, None, 1])
+    self.x = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
+    self.y = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
+    self.r = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
 
     # batch normalization : deals with poor initialization helps gradient flow
     self.d_bn1 = batch_norm(batch_size, name=self.model_name+'_d_bn1')
@@ -91,7 +92,7 @@ class CPPNVAE():
     self.z_mean, self.z_log_sigma_sq = self.encoder()
 
     # Draw one sample z from Gaussian distribution
-    eps = tf.random_normal((self.batch_size, self.z_dim), 0, 1, dtype=tf.float32)
+    eps = tf.random.normal((self.batch_size, self.z_dim), 0, 1, dtype=tf.float32)
     # z = mu + sigma*epsilon
     self.z = tf.add(self.z_mean, tf.mul(tf.sqrt(tf.exp(self.z_log_sigma_sq)), eps))
 
@@ -191,8 +192,8 @@ class CPPNVAE():
     # Generate probabilistic encoder (recognition network), which
     # maps inputs onto a normal distribution in latent space.
     # The transformation is parametrized and can be learned.
-    H1 = tf.nn.dropout(tf.nn.softplus(linear(self.batch_flatten, self.net_size_q, self.model_name+'_q_lin1')), self.keep_prob)
-    H2 = tf.nn.dropout(tf.nn.softplus(linear(H1, self.net_size_q, self.model_name+'_q_lin2')), self.keep_prob)
+    H1 = tf.nn.dropout(tf.nn.softplus(linear(self.batch_flatten, self.net_size_q, self.model_name+'_q_lin1')), self.rate)
+    H2 = tf.nn.dropout(tf.nn.softplus(linear(H1, self.net_size_q, self.model_name+'_q_lin2')), self.rate)
     z_mean = linear(H2, self.z_dim, self.model_name+'_q_lin3_mean')
     z_log_sigma_sq = linear(H2, self.z_dim, self.model_name+'_q_lin3_log_sigma_sq')
     return (z_mean, z_log_sigma_sq)
