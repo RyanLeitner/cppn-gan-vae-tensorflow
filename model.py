@@ -66,8 +66,6 @@ class CPPNVAE():
     self.rate = 1 - keep_prob
     self.df_dim = df_dim
 
-    tf.compat.v1.disable_eager_execution()
-    print('deactivated eager execution')
     # tf Graph batch of image (batch_size, height, width, depth)
     self.batch = tf.compat.v1.placeholder(dtype=tf.float32, shape=[batch_size, x_dim, y_dim, c_dim])
     self.batch_flatten = tf.reshape(self.batch, [batch_size, -1])
