@@ -66,6 +66,8 @@ class CPPNVAE():
     self.rate = 1 - keep_prob
     self.df_dim = df_dim
 
+    tf.compat.v1.disable_eager_execution()
+    print("deactivated eager execution")
     # tf Graph batch of image (batch_size, height, width, depth)
     self.batch = tf.compat.v1.placeholder(tf.float32, [batch_size, x_dim, y_dim, c_dim])
     self.batch_flatten = tf.reshape(self.batch, [batch_size, -1])
@@ -78,6 +80,7 @@ class CPPNVAE():
     # latent vector
     # self.z = tf.compat.v1.placeholder(tf.float32, [self.batch_size, self.z_dim])
     # inputs to cppn, like coordinates and radius from centre
+    
     self.x = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
     self.y = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
     self.r = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
