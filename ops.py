@@ -34,7 +34,7 @@ class batch_norm(object):
     def __enter__(self):
         return self
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         print('exit')
 
 def binary_cross_entropy_with_logits(logits, targets, name=None):
