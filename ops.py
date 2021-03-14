@@ -16,7 +16,6 @@ class batch_norm(object):
 
             self.ema = tf.train.ExponentialMovingAverage(decay=self.momentum)
             self.name=name
-            scope.reuse_variables()
 
     def __call__(self, x, train=True):
         shape = x.get_shape().as_list()
@@ -28,7 +27,6 @@ class batch_norm(object):
                                 initializer=tf.constant_initializer(0.))
 
             self.mean, self.variance = tf.nn.moments(x, [0, 1, 2])
-            scope.reuse_variables()
 
             return tf.nn.batch_norm_with_global_normalization(
                 x, self.mean, self.variance, self.beta, self.gamma, self.epsilon,

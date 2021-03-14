@@ -83,8 +83,8 @@ class CPPNVAE():
     self.r = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
 
     # batch normalization : deals with poor initialization helps gradient flow
-    self.d_bn1 = batch_norm(batch_size, name=self.model_name+'_d_bn1')
-    self.d_bn2 = batch_norm(batch_size, name=self.model_name+'_d_bn2')
+    self.d_bn1 = batch_norm(batch_size=self.batch_size, name=self.model_name+'_d_bn1')
+    self.d_bn2 = batch_norm(batch_size=self.batch_size, name=self.model_name+'_d_bn2')
 
     # Use recognition network to determine mean and
     # (log) variance of Gaussian distribution in latent
