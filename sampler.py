@@ -43,7 +43,7 @@ class Sampler():
     self.mnist = None
     self.model = CPPNVAE()
     self.model.load_model('save')
-    self.z = self.generate_z()
+    self.z = self.generate_z()    
   def get_random_mnist(self, with_label = False):
     if self.mnist == None:
       self.mnist = read_data_sets()

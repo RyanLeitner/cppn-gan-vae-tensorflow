@@ -9,6 +9,7 @@ from tensorflow.python.framework import ops
 class batch_norm(object):
     """Code modification of http://stackoverflow.com/a/33950177"""
     def __init__(self, batch_size, epsilon=1e-5, momentum = 0.1, name="batch_norm"):
+        tf.compat.v1.disable_eager_execution()
         with tf.compat.v1.placeholder(name=name) as scope:
             self.epsilon = epsilon
             self.momentum = momentum
@@ -19,7 +20,7 @@ class batch_norm(object):
 
     def __call__(self, x, train=True):
         shape = x.get_shape().as_list()
-
+        tf.compat.v1.disable_eager_execution()
         with tf.compat.v1.placeholder(name=self.name) as scope:
             self.gamma = tf.compat.v1.get_variable("gamma", [shape[-1]],
                                 initializer=tf.random_normal_initializer(1., 0.02))
