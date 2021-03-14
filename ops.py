@@ -31,6 +31,12 @@ class batch_norm(object):
                 x, self.mean, self.variance, self.beta, self.gamma, self.epsilon,
                 scale_after_normalization=True)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self):
+        print('exit')
+
 def binary_cross_entropy_with_logits(logits, targets, name=None):
     """Computes binary cross entropy given `logits`.
 
