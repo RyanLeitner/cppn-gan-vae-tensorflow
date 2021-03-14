@@ -67,9 +67,9 @@ class CPPNVAE():
     self.df_dim = df_dim
 
     tf.compat.v1.disable_eager_execution()
-    print("deactivated eager execution")
+    print('deactivated eager execution')
     # tf Graph batch of image (batch_size, height, width, depth)
-    self.batch = tf.compat.v1.placeholder(tf.float32, [batch_size, x_dim, y_dim, c_dim])
+    self.batch = tf.compat.v1.placeholder(dtype=tf.float32, shape=[batch_size, x_dim, y_dim, c_dim])
     self.batch_flatten = tf.reshape(self.batch, [batch_size, -1])
 
     n_points = x_dim * y_dim
@@ -81,9 +81,9 @@ class CPPNVAE():
     # self.z = tf.compat.v1.placeholder(tf.float32, [self.batch_size, self.z_dim])
     # inputs to cppn, like coordinates and radius from centre
     
-    self.x = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
-    self.y = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
-    self.r = tf.compat.v1.placeholder(tf.float32, [self.batch_size, None, 1])
+    self.x = tf.compat.v1.placeholder(dtype=tf.float32, shape=[self.batch_size, None, 1])
+    self.y = tf.compat.v1.placeholder(dtype=tf.float32, shape=[self.batch_size, None, 1])
+    self.r = tf.compat.v1.placeholder(dtype=tf.float32, shape=[self.batch_size, None, 1])
 
     # batch normalization : deals with poor initialization helps gradient flow
     self.d_bn1 = batch_norm(batch_size=self.batch_size, name=self.model_name+'_d_bn1')
