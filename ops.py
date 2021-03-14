@@ -9,7 +9,7 @@ from tensorflow.python.framework import ops
 class batch_norm(object):
     """Code modification of http://stackoverflow.com/a/33950177"""
     def __init__(self, batch_size, epsilon=1e-5, momentum = 0.1, name="batch_norm"):
-        with tf.compat.v1.placeholder(name) as scope:
+        with tf.compat.v1.placeholder(name=name) as scope:
             self.epsilon = epsilon
             self.momentum = momentum
             self.batch_size = batch_size
@@ -20,7 +20,7 @@ class batch_norm(object):
     def __call__(self, x, train=True):
         shape = x.get_shape().as_list()
 
-        with tf.compat.v1.placeholder(self.name) as scope:
+        with tf.compat.v1.placeholder(name=self.name) as scope:
             self.gamma = tf.compat.v1.get_variable("gamma", [shape[-1]],
                                 initializer=tf.random_normal_initializer(1., 0.02))
             self.beta = tf.compat.v1.get_variable("beta", [shape[-1]],
